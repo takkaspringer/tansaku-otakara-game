@@ -337,10 +337,11 @@ function playSequence() {
 function draw() {
   const { width, height } = resizeCanvas();
   ctx.clearRect(0, 0, width, height);
-  const margin = 34;
-  const topHud = Math.min(138, Math.max(94, height * 0.18));
-  const bottomHud = Math.min(178, Math.max(132, height * 0.24));
-  const mapSize = Math.max(210, Math.min(width - margin * 2, height - topHud - bottomHud));
+  const margin = 30;
+  const topHud = Math.min(120, Math.max(86, height * 0.16));
+  const bottomHud = Math.min(178, Math.max(154, height * 0.23));
+  const availableHeight = Math.max(220, height - topHud - bottomHud);
+  const mapSize = Math.max(210, Math.min(width - margin * 2, availableHeight));
   const cell = mapSize / gridSize;
   const originX = (width - mapSize) / 2;
   const originY = topHud + Math.max(0, (height - topHud - bottomHud - mapSize) / 2);
