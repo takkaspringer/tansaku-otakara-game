@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>おとのたからさがし - 音だけで遊ぶゲーム</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2374f0bf'/%3E%3Cpath d='M18 38h28v14H18z' fill='%238d5524'/%3E%3Cpath d='M21 25h22v15H21z' fill='%23ffd966'/%3E%3Cpath d='M29 28h6v24h-6z' fill='%23fff3a6'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app" aria-labelledby="title">
+      <section class="game-shell">
+        <div class="stage" aria-hidden="true">
+          <canvas id="visualizer" width="900" height="560"></canvas>
+          <div class="stage-label">
+            <span class="map-name">おとまちマップ</span>
+            <strong id="visualHint">音をきいて、たからをさがそう</strong>
+          </div>
+          <div class="helper-bubble">
+            <span>ナビ</span>
+            <strong id="helperText">ぼくが音であんないするよ</strong>
+          </div>
+          <div class="stage-scoreboard">
+            <div>
+              <span>レベル</span>
+              <strong id="stageLevel">1</strong>
+            </div>
+            <div>
+              <span>おたから</span>
+              <strong id="stageScore">0/3</strong>
+            </div>
+            <div>
+              <span>あるいた</span>
+              <strong id="stageMoves">0</strong>
+            </div>
+            <div class="cheer-tile">
+              <span>おうえん</span>
+              <strong id="stageCheer">いっしょに見つけよう</strong>
+            </div>
+          </div>
+          <div class="proximity-card">
+            <span>たからの近さ</span>
+            <div class="proximity-track">
+              <div id="proximityFill"></div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="panel" aria-label="ゲーム操作パネル">
+          <p class="eyebrow">ヘッドホンをつけると遊びやすいです</p>
+          <h1 id="title">おとのたからさがし</h1>
+          <p class="lead">
+            みぎ・ひだりから聞こえる音をたよりに、たからの音をさがそう。
+          </p>
+
+          <section class="guide-card primary-guide" aria-labelledby="start-title">
+            <h2 id="start-title">まずはここ</h2>
+            <p>
+              大きな「ゲームをはじめる」ボタンをおして、声のせつめいを聞きます。
+            </p>
+          </section>
+
+          <div class="status-grid" role="group" aria-label="現在の状態">
+            <div>
+              <span>レベル</span>
+              <strong id="level">1</strong>
+            </div>
+            <div>
+              <span>手数</span>
+              <strong id="moves">0</strong>
+            </div>
+            <div>
+              <span>見つけた音</span>
+              <strong id="score">0/3</strong>
+            </div>
+          </div>
+
+          <div class="controls" aria-label="操作">
+            <button id="startButton" type="button">ゲームをはじめる</button>
+            <button id="scanButton" type="button">音をきく</button>
+            <button id="repeatButton" type="button">せつめい</button>
+          </div>
+
+          <div class="settings">
+            <label>
+              むずかしさ
+              <select id="difficulty">
+                <option value="relaxed">やさしい</option>
+                <option value="standard" selected>ふつう</option>
+                <option value="sharp">チャレンジ</option>
+              </select>
+            </label>
+            <label class="switch">
+              <input id="speechToggle" type="checkbox" checked>
+              <span>声のガイド</span>
+            </label>
+          </div>
+
+          <section class="guide-card" aria-labelledby="goal-title">
+            <h2 id="goal-title">なにをするの？</h2>
+            <p>
+              「高い音」を見つけたらクリアに近づきます。そばにいるナビが、声と音であんないします。
+            </p>
+          </section>
+
+          <section class="guide-list" aria-labelledby="controls-title">
+            <h2 id="controls-title">うごかしかた</h2>
+            <dl>
+              <div>
+                <dt>あるく</dt>
+                <dd>矢印キー または WASD</dd>
+              </div>
+              <div>
+                <dt>きく</dt>
+                <dd>スペースキー または「音をきく」ボタン</dd>
+              </div>
+              <div>
+                <dt>はじめる</dt>
+                <dd>Enterキー または「ゲームをはじめる」ボタン</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="guide-list" aria-labelledby="sound-title">
+            <h2 id="sound-title">音のヒント</h2>
+            <dl>
+              <div>
+                <dt>高い音</dt>
+                <dd>さがしている音です。</dd>
+              </div>
+              <div>
+                <dt>低い音</dt>
+                <dd>あぶない音です。できるだけよけます。</dd>
+              </div>
+              <div>
+                <dt>みぎ・ひだり</dt>
+                <dd>聞こえるほうへ進みます。</dd>
+              </div>
+            </dl>
+          </section>
+
+          <div id="message" class="message" role="status" aria-live="polite">
+            「ゲームをはじめる」をおすと、声で遊び方をせつめいします。
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <script src="game.js"></script>
+  </body>
+</html>
