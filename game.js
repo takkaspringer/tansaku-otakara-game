@@ -43,6 +43,20 @@ const elements = {
 
 const ctx = elements.canvas.getContext("2d");
 
+function resizeCanvas() {
+  const rect = elements.canvas.getBoundingClientRect();
+  const ratio = Math.min(window.devicePixelRatio || 1, 2);
+  const nextWidth = Math.max(1, Math.round(rect.width * ratio));
+  const nextHeight = Math.max(1, Math.round(rect.height * ratio));
+  if (elements.canvas.width !== nextWidth || elements.canvas.height !== nextHeight) {
+    elements.canvas.width = nextWidth;
+    elements.canvas.height = nextHeight;
+  }
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  ctx.imageSmoothingEnabled = false;
+  return { width: rect.width, height: rect.height };
+}
+
 function ensureAudio() {
   if (state.audio) return state.audio;
   const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -321,13 +335,15 @@ function playSequence() {
 }
 
 function draw() {
-  const { width, height } = elements.canvas;
+  const { width, height } = resizeCanvas();
   ctx.clearRect(0, 0, width, height);
-  const margin = 54;
-  const mapSize = Math.min(width - margin * 2, height - margin * 1.6);
+  const margin = 34;
+  const topHud = Math.min(138, Math.max(94, height * 0.18));
+  const bottomHud = Math.min(178, Math.max(132, height * 0.24));
+  const mapSize = Math.max(210, Math.min(width - margin * 2, height - topHud - bottomHud));
   const cell = mapSize / gridSize;
   const originX = (width - mapSize) / 2;
-  const originY = (height - mapSize) / 2 + 16;
+  const originY = topHud + Math.max(0, (height - topHud - bottomHud - mapSize) / 2);
 
   drawWorldBackground(width, height);
   drawMap(originX, originY, cell);
